@@ -1,21 +1,34 @@
-import './globals.css'
-import { Inter } from 'next/font/google'
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] })
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
-export const metadata = {
-  title: 'Chop Chop Agency | Gastronomie & Digital Solutions',
-  description: 'Wir digitalisieren die Gastronomie. Von AI-Chatbots bis zum modernen Dienstplan.',
-}
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Chop Chop Agency | Gastronomie & Digital Solutions",
+  description: "Wir digitalisieren deinen Betrieb mit smarten Lösungen.",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="de" className="scroll-smooth">
-      <body className={`${inter.className} bg-black text-white antialiased`}>{children}</body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
+      >
+        {children}
+      </body>
     </html>
-  )
+  );
 }
