@@ -433,143 +433,145 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Marquee CTA */}
-      <section className="py-6 border-y border-white/10">
-        <Marquee speed={20}>
-          <span className="text-[clamp(2rem,6vw,5rem)] font-bold tracking-[-0.04em] uppercase text-white/5 mx-4">
-            Bereit loszulegen? &bull; Lass uns reden &bull; Projekt starten &bull; Digital werden &bull;&nbsp;
-          </span>
-        </Marquee>
-      </section>
+      <div className="relative z-20 bg-black" style={{ marginTop: '-100vh' }}>
+        {/* Marquee CTA */}
+        <section className="py-6 border-y border-white/10">
+          <Marquee speed={20}>
+            <span className="text-[clamp(2rem,6vw,5rem)] font-bold tracking-[-0.04em] uppercase text-white/5 mx-4">
+              Bereit loszulegen? &bull; Lass uns reden &bull; Projekt starten &bull; Digital werden &bull;&nbsp;
+            </span>
+          </Marquee>
+        </section>
 
-      {/* Contact */}
-      <section id="contact" className="py-32 md:py-48">
-        <div className="max-w-[1800px] mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-            <RevealOnScroll>
-              <div>
-                <h2 className="text-[clamp(2rem,5vw,5rem)] font-bold tracking-[-0.06em] uppercase leading-none mb-8">
-                  Let&apos;s<br />talk.
-                </h2>
-                <p className="text-white/40 text-sm md:text-base leading-relaxed max-w-md mb-12">
-                  Du hast eine Idee, ein Problem, oder einfach Bock auf was Neues?
-                  Schreib uns &mdash; wir melden uns innerhalb von 24h.
-                </p>
-              </div>
-            </RevealOnScroll>
-
-            <RevealOnScroll delay={0.2}>
-              <form className="space-y-8" onSubmit={handleFormSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      required
-                      value={formData.name}
-                      onChange={handleFormChange}
-                      className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
-                      placeholder="Dein Name"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">E-Mail</label>
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleFormChange}
-                      className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
-                      placeholder="deine@mail.de"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Betrieb</label>
-                    <input
-                      type="text"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleFormChange}
-                      className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
-                      placeholder="Name deines Betriebs"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Telefon</label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleFormChange}
-                      className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
-                      placeholder="Deine Telefonnummer"
-                    />
-                  </div>
-                </div>
+        {/* Contact */}
+        <section id="contact" className="py-32 md:py-48">
+          <div className="max-w-[1800px] mx-auto px-6 md:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+              <RevealOnScroll>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-4">Dies interessiert mich besonders</label>
-                  <div className="relative">
-                    <select
-                      name="interest"
-                      value={formData.interest}
-                      onChange={handleFormChange}
-                      className="w-full bg-black border-b border-white/10 pb-3 text-white text-sm focus:outline-none focus:border-white transition-colors duration-300 appearance-none cursor-pointer"
-                    >
-                      <option value="" disabled className="text-white/50 bg-black">Bitte ausw&auml;hlen...</option>
-                      {formServices.map((service, i) => (
-                        <option key={i} value={service} className="bg-black text-white py-2">
-                          {service}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute right-0 top-0 pt-1 pointer-events-none text-white/50">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                  <h2 className="text-[clamp(2rem,5vw,5rem)] font-bold tracking-[-0.06em] uppercase leading-none mb-8">
+                    Let&apos;s<br />talk.
+                  </h2>
+                  <p className="text-white/40 text-sm md:text-base leading-relaxed max-w-md mb-12">
+                    Du hast eine Idee, ein Problem, oder einfach Bock auf was Neues?
+                    Schreib uns &mdash; wir melden uns innerhalb von 24h.
+                  </p>
+                </div>
+              </RevealOnScroll>
+
+              <RevealOnScroll delay={0.2}>
+                <form className="space-y-8" onSubmit={handleFormSubmit}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        required
+                        value={formData.name}
+                        onChange={handleFormChange}
+                        className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
+                        placeholder="Dein Name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">E-Mail</label>
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleFormChange}
+                        className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
+                        placeholder="deine@mail.de"
+                      />
                     </div>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Nachricht</label>
-                  <textarea
-                    name="message"
-                    required
-                    value={formData.message}
-                    onChange={handleFormChange}
-                    rows={4}
-                    className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 resize-none placeholder:text-white/15"
-                    placeholder="Erz&auml;hl uns von deinem Projekt..."
-                  />
-                </div>
-                <motion.button
-                  type="submit"
-                  disabled={formStatus === 'loading'}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full border border-white/20 text-white font-bold py-5 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                >
-                  {formStatus === 'loading' ? 'Wird gesendet...' : formStatus === 'success' ? 'Erfolgreich gesendet!' : 'Anfrage senden'}
-                </motion.button>
-                {formStatus === 'error' && (
-                  <p className="text-red-500 text-xs mt-2 text-center">Es gab einen Fehler beim Senden. Bitte versuche es später noch einmal.</p>
-                )}
-              </form>
-            </RevealOnScroll>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Betrieb</label>
+                      <input
+                        type="text"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleFormChange}
+                        className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
+                        placeholder="Name deines Betriebs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Telefon</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleFormChange}
+                        className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
+                        placeholder="Deine Telefonnummer"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-4">Dies interessiert mich besonders</label>
+                    <div className="relative">
+                      <select
+                        name="interest"
+                        value={formData.interest}
+                        onChange={handleFormChange}
+                        className="w-full bg-black border-b border-white/10 pb-3 text-white text-sm focus:outline-none focus:border-white transition-colors duration-300 appearance-none cursor-pointer"
+                      >
+                        <option value="" disabled className="text-white/50 bg-black">Bitte ausw&auml;hlen...</option>
+                        {formServices.map((service, i) => (
+                          <option key={i} value={service} className="bg-black text-white py-2">
+                            {service}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute right-0 top-0 pt-1 pointer-events-none text-white/50">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Nachricht</label>
+                    <textarea
+                      name="message"
+                      required
+                      value={formData.message}
+                      onChange={handleFormChange}
+                      rows={4}
+                      className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 resize-none placeholder:text-white/15"
+                      placeholder="Erz&auml;hl uns von deinem Projekt..."
+                    />
+                  </div>
+                  <motion.button
+                    type="submit"
+                    disabled={formStatus === 'loading'}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full border border-white/20 text-white font-bold py-5 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                  >
+                    {formStatus === 'loading' ? 'Wird gesendet...' : formStatus === 'success' ? 'Erfolgreich gesendet!' : 'Anfrage senden'}
+                  </motion.button>
+                  {formStatus === 'error' && (
+                    <p className="text-red-500 text-xs mt-2 text-center">Es gab einen Fehler beim Senden. Bitte versuche es später noch einmal.</p>
+                  )}
+                </form>
+              </RevealOnScroll>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 relative z-30 bg-black">
-        <div className="max-w-[1800px] mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-3">
-            <span className="font-bold tracking-[-0.06em] uppercase text-sm">Chop Chop</span>
+        {/* Footer */}
+        <footer className="border-t border-white/10 relative z-30 bg-black">
+          <div className="max-w-[1800px] mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-3">
+              <span className="font-bold tracking-[-0.06em] uppercase text-sm">Chop Chop</span>
+            </div>
+            <p className="text-white/20 text-xs tracking-[0.1em]">&copy; 2026 <a href="https://young-creatives.de" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300">YOUNG CREATIVES</a>. Alle Rechte vorbehalten.</p>
           </div>
-          <p className="text-white/20 text-xs tracking-[0.1em]">&copy; 2026 <a href="https://young-creatives.de" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300">YOUNG CREATIVES</a>. Alle Rechte vorbehalten.</p>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   )
 }
