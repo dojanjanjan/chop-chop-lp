@@ -9,6 +9,7 @@ import {
   useSpring,
   useInView,
   AnimatePresence,
+  useMotionValue,
 } from 'framer-motion'
 import {
   Bot,
@@ -148,6 +149,14 @@ export default function LandingPage() {
     message: '',
   })
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -203,7 +212,9 @@ export default function LandingPage() {
     offset: ['start start', 'end end'],
   })
   const smoothProgress = useSpring(portfolioProgress, { stiffness: 100, damping: 30 })
-  const xTranslate = useTransform(smoothProgress, [0, 1], ['0%', '-60%'])
+  const xTranslate = useTransform(smoothProgress, [0, 1], ['0%', isMobile ? '-80%' : '-60%'])
+  const dragX = useMotionValue(0)
+  const portfolioContainerRef = useRef<HTMLDivElement>(null)
 
   const heroRef = useRef(null)
   const { scrollYProgress: heroScroll } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
@@ -257,7 +268,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-8"
           >
-            {(['Beispiele', 'Leistungen', 'Kontakt'] as const).map((item, i) => (
+            {(['Leistungen', 'Beispiele', 'Kontakt'] as const).map((item, i) => (
               <motion.a
                 key={item}
                 href={`#${item === 'Beispiele' ? 'work' : item === 'Leistungen' ? 'features' : 'contact'}`}
@@ -336,7 +347,7 @@ export default function LandingPage() {
       {/* Marquee divider */}
       <section className="py-6 border-y border-white/10">
         <Marquee speed={25}>
-          <span className="text-[clamp(1rem,3vw,2rem)] font-bold tracking-[-0.04em] uppercase text-white/10 mx-8">
+          <span className="text-[clamp(1rem,3vw,2rem)] font-bold tracking-[-0.04em] uppercase text-white/30 mx-8">
             Web Design &bull; AI Automation &bull; Gastro Tech &bull; Inventory &bull; Dienstplanung &bull; Chatbots &bull; Zeiterfassung &bull; Feedback &bull;&nbsp;
           </span>
         </Marquee>
@@ -393,10 +404,13 @@ export default function LandingPage() {
               <div className="relative w-full h-[250px] lg:h-full lg:min-h-[400px] rounded-lg overflow-hidden lg:sticky lg:top-24">
                 <Image
                   src="/images/chopchop_03.webp"
-                  alt=""
+                  alt="YunAI - Digital Assistant"
                   fill
                   className="object-cover"
                 />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/70">YunAI &mdash; Digital Assistant</span>
+                </div>
               </div>
             </RevealOnScroll>
           </div>
@@ -405,12 +419,18 @@ export default function LandingPage() {
 
       {/* Portfolio / Work */}
       {/* Re-add aggressive negative margin to pull the black features section UP into the sticky view */}
-      <section id="work" ref={portfolioRef} className="relative h-[200vh] z-0" style={{ marginTop: '-20vh' }}>
+      <section id="work" ref={portfolioRef} className={`relative z-0 ${isMobile ? 'h-[150vh]' : 'h-[200vh]'}`} style={{ marginTop: '-20vh' }}>
         <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-          <motion.div
-            style={{ x: xTranslate }}
-            className="flex gap-6 px-6 md:px-12"
-          >
+          <motion.div style={{ x: xTranslate }}>
+            <motion.div
+              ref={portfolioContainerRef}
+              drag="x"
+              dragConstraints={{ left: -1500, right: 0 }}
+              dragElastic={0.15}
+              dragMomentum
+              dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+              className="flex gap-6 px-6 md:px-12 cursor-grab active:cursor-grabbing"
+            >
             {projects.map((project, i) => (
               <motion.div
                 key={i}
@@ -440,6 +460,7 @@ export default function LandingPage() {
                 </div>
               </motion.div>
             ))}
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -448,7 +469,7 @@ export default function LandingPage() {
         {/* Marquee CTA */}
         <section className="py-6 border-y border-white/10">
           <Marquee speed={20}>
-            <span className="text-[clamp(2rem,6vw,5rem)] font-bold tracking-[-0.04em] uppercase text-white/5 mx-4">
+            <span className="text-[clamp(2rem,6vw,5rem)] font-bold tracking-[-0.04em] uppercase text-white/20 mx-4">
               Bereit loszulegen? &bull; Lass uns reden &bull; Projekt starten &bull; Digital werden &bull;&nbsp;
             </span>
           </Marquee>
@@ -474,7 +495,7 @@ export default function LandingPage() {
                 <form className="space-y-8" onSubmit={handleFormSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Name</label>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white mb-3">Name</label>
                       <input
                         type="text"
                         name="name"
@@ -486,7 +507,7 @@ export default function LandingPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">E-Mail</label>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white mb-3">E-Mail</label>
                       <input
                         type="email"
                         name="email"
@@ -500,7 +521,7 @@ export default function LandingPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Betrieb</label>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white mb-3">Betrieb</label>
                       <input
                         type="text"
                         name="company"
@@ -511,7 +532,7 @@ export default function LandingPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Telefon</label>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white mb-3">Telefon</label>
                       <input
                         type="tel"
                         name="phone"
@@ -523,7 +544,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-4">Dies interessiert mich besonders</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white mb-4">Dies interessiert mich besonders</label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                       {formServices.map((service, i) => (
                         <label key={i} className="flex items-start gap-3 cursor-pointer group">
@@ -544,7 +565,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Nachricht</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white mb-3">Nachricht</label>
                     <textarea
                       name="message"
                       required
