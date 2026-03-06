@@ -344,7 +344,7 @@ export default function LandingPage() {
 
       {/* Features */}
       {/* Aggressive negative margin to perfectly overlap the black void when the sticky horizontal container unsticks */}
-      <section id="features" className="relative z-20 pt-10 md:pt-20 pb-16 md:pb-24 bg-black" style={{ marginTop: '-80vh' }}>
+      <section id="features" className="relative z-20 pt-10 md:pt-20 pb-16 md:pb-24 bg-black" style={{ marginTop: '-100vh' }}>
         <div className="max-w-[1800px] mx-auto px-6 md:px-12">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* Left: heading + features list */}
@@ -361,20 +361,22 @@ export default function LandingPage() {
               </RevealOnScroll>
 
               <RevealOnScroll delay={0.1}>
-                <div className="space-y-0 h-[450px] overflow-y-auto pr-4 custom-scrollbar">
+                <div className="space-y-0 h-[320px] md:h-[450px] overflow-y-auto pr-4 custom-scrollbar">
                   {features.map((f, i) => (
                     <motion.div
                       key={i}
-                      className="group border-t border-white/10 py-5 flex flex-col md:flex-row md:items-center gap-3 md:gap-8 cursor-default"
+                      className="group border-t border-white/10 py-3 md:py-5 flex flex-row items-center gap-4 md:gap-8 cursor-default"
                       whileHover={{ x: 20 }}
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <span className="text-white/15 text-xs font-mono">{f.num}</span>
-                      <div className="w-10 h-10 border border-white/10 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-300 shrink-0">
-                        <f.icon size={16} />
+                      <div className="w-8 h-8 md:w-10 md:h-10 border border-white/10 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-300 shrink-0">
+                        <f.icon className="w-4 h-4 md:w-5 md:h-5" />
                       </div>
-                      <h3 className="text-lg md:text-2xl font-bold tracking-tight flex-1">{f.title}</h3>
-                      <p className="text-white/40 text-xs md:text-sm md:w-[280px] lg:w-[320px] text-left shrink-0 pointer-events-none">{f.desc}</p>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base md:text-2xl font-bold tracking-tight truncate md:whitespace-normal">{f.title}</h3>
+                        <p className="text-white/40 text-[10px] md:text-sm md:w-[280px] lg:w-[320px] text-left shrink-0 pointer-events-none truncate md:whitespace-normal">{f.desc}</p>
+                      </div>
                       <ArrowUpRight size={16} className="text-white/10 group-hover:text-white transition-colors duration-300 hidden md:block shrink-0" />
                     </motion.div>
                   ))}
@@ -387,8 +389,8 @@ export default function LandingPage() {
             </div>
 
             {/* Right: image */}
-            <RevealOnScroll delay={0.2} className="hidden lg:block flex-shrink-0 w-[300px] xl:w-[360px]">
-              <div className="relative w-full h-full min-h-[400px] rounded-lg overflow-hidden sticky top-24">
+            <RevealOnScroll delay={0.2} className="block lg:flex-shrink-0 w-full lg:w-[300px] xl:w-[360px] mt-8 lg:mt-0">
+              <div className="relative w-full h-[250px] lg:h-full lg:min-h-[400px] rounded-lg overflow-hidden lg:sticky lg:top-24">
                 <Image
                   src="/images/chopchop_03.webp"
                   alt=""
@@ -466,18 +468,21 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-4">Dies interessiert mich besonders</label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                    {formServices.map((service, i) => (
-                      <label key={i} className="flex items-start gap-3 cursor-pointer group">
-                        <div className="relative flex items-center justify-center flex-shrink-0 w-4 h-4 mt-0.5">
-                          <input type="checkbox" className="peer appearance-none w-4 h-4 border border-white/20 bg-white/5 rounded-sm checked:bg-white checked:border-white transition-colors cursor-pointer" />
-                          <svg className="absolute w-3 h-3 text-black opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
-                        </div>
-                        <span className="text-xs text-white/60 group-hover:text-white transition-colors leading-relaxed select-none">
+                  <div className="relative">
+                    <select
+                      className="w-full bg-black border-b border-white/10 pb-3 text-white text-sm focus:outline-none focus:border-white transition-colors duration-300 appearance-none cursor-pointer"
+                      defaultValue=""
+                    >
+                      <option value="" disabled className="text-white/50 bg-black">Bitte ausw&auml;hlen...</option>
+                      {formServices.map((service, i) => (
+                        <option key={i} value={service} className="bg-black text-white py-2">
                           {service}
-                        </span>
-                      </label>
-                    ))}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-0 top-0 pt-1 pointer-events-none text-white/50">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                    </div>
                   </div>
                 </div>
                 <div>
