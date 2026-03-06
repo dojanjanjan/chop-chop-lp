@@ -138,6 +138,45 @@ export default function LandingPage() {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null)
   const [isScrolled, setIsScrolled] = useState(false)
 
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    interest: '',
+    message: '',
+  })
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormStatus('loading')
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      if (!res.ok) throw new Error('Fehler beim Senden')
+
+      setFormStatus('success')
+      setFormData({ name: '', email: '', company: '', phone: '', interest: '', message: '' })
+
+      setTimeout(() => setFormStatus('idle'), 5000)
+    } catch (error) {
+      console.error(error)
+      setFormStatus('error')
+    }
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
@@ -292,49 +331,9 @@ export default function LandingPage() {
         </Marquee>
       </section>
 
-      {/* Portfolio / Work */}
-      <section id="work" ref={portfolioRef} className="relative h-[200vh] z-0">
-        <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-          <motion.div
-            style={{ x: xTranslate }}
-            className="flex gap-6 px-6 md:px-12"
-          >
-            {projects.map((project, i) => (
-              <motion.div
-                key={i}
-                className="relative flex-shrink-0 w-[75vw] md:w-[40vw] lg:w-[30vw] group cursor-pointer"
-                onMouseEnter={() => setHoveredProject(i)}
-                onMouseLeave={() => setHoveredProject(null)}
-              >
-                <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
-                  <motion.div
-                    initial={{ scale: 1.3 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    viewport={{ once: true }}
-                    className="w-full h-full"
-                  >
-                    <Image
-                      src={project.src}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 768px) 75vw, 30vw"
-                    />
-                  </motion.div>
-                </div>
-                <div className="absolute -top-4 -left-2 text-[8rem] md:text-[10rem] font-bold leading-none text-white/[0.03] tracking-tighter pointer-events-none select-none">
-                  {String(i + 1).padStart(2, '0')}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       {/* Features */}
-      {/* Aggressive negative margin to perfectly overlap the black void when the sticky horizontal container unsticks */}
-      <section id="features" className="relative z-20 pt-10 md:pt-20 pb-16 md:pb-24 bg-black" style={{ marginTop: '-100vh' }}>
+      {/* Aggressive negative margin removed as it's no longer following the sticky horizontal section */}
+      <section id="features" className="relative z-20 pt-10 md:pt-20 pb-16 md:pb-24 bg-black">
         <div className="max-w-[1800px] mx-auto px-6 md:px-12">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* Left: heading + features list */}
@@ -393,6 +392,47 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Portfolio / Work */}
+      {/* Re-add aggressive negative margin to pull the black features section UP into the sticky view */}
+      <section id="work" ref={portfolioRef} className="relative h-[200vh] z-0" style={{ marginTop: '-20vh' }}>
+        <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+          <motion.div
+            style={{ x: xTranslate }}
+            className="flex gap-6 px-6 md:px-12"
+          >
+            {projects.map((project, i) => (
+              <motion.div
+                key={i}
+                className="relative flex-shrink-0 w-[75vw] md:w-[40vw] lg:w-[30vw] group cursor-pointer"
+                onMouseEnter={() => setHoveredProject(i)}
+                onMouseLeave={() => setHoveredProject(null)}
+              >
+                <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
+                  <motion.div
+                    initial={{ scale: 1.3 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    viewport={{ once: true }}
+                    className="w-full h-full"
+                  >
+                    <Image
+                      src={project.src}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 75vw, 30vw"
+                    />
+                  </motion.div>
+                </div>
+                <div className="absolute -top-4 -left-2 text-[8rem] md:text-[10rem] font-bold leading-none text-white/[0.03] tracking-tighter pointer-events-none select-none">
+                  {String(i + 1).padStart(2, '0')}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* Marquee CTA */}
       <section className="py-6 border-y border-white/10">
         <Marquee speed={20}>
@@ -419,12 +459,16 @@ export default function LandingPage() {
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.2}>
-              <form className="space-y-8">
+              <form className="space-y-8" onSubmit={handleFormSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Name</label>
                     <input
                       type="text"
+                      name="name"
+                      required
+                      value={formData.name}
+                      onChange={handleFormChange}
                       className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
                       placeholder="Dein Name"
                     />
@@ -433,6 +477,10 @@ export default function LandingPage() {
                     <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">E-Mail</label>
                     <input
                       type="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleFormChange}
                       className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
                       placeholder="deine@mail.de"
                     />
@@ -443,6 +491,9 @@ export default function LandingPage() {
                     <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Betrieb</label>
                     <input
                       type="text"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleFormChange}
                       className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
                       placeholder="Name deines Betriebs"
                     />
@@ -451,6 +502,9 @@ export default function LandingPage() {
                     <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Telefon</label>
                     <input
                       type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleFormChange}
                       className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 placeholder:text-white/15"
                       placeholder="Deine Telefonnummer"
                     />
@@ -460,8 +514,10 @@ export default function LandingPage() {
                   <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-4">Dies interessiert mich besonders</label>
                   <div className="relative">
                     <select
+                      name="interest"
+                      value={formData.interest}
+                      onChange={handleFormChange}
                       className="w-full bg-black border-b border-white/10 pb-3 text-white text-sm focus:outline-none focus:border-white transition-colors duration-300 appearance-none cursor-pointer"
-                      defaultValue=""
                     >
                       <option value="" disabled className="text-white/50 bg-black">Bitte ausw&auml;hlen...</option>
                       {formServices.map((service, i) => (
@@ -478,18 +534,27 @@ export default function LandingPage() {
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-3">Nachricht</label>
                   <textarea
+                    name="message"
+                    required
+                    value={formData.message}
+                    onChange={handleFormChange}
                     rows={4}
                     className="w-full bg-transparent border-b border-white/10 pb-3 text-white focus:outline-none focus:border-white transition-colors duration-300 resize-none placeholder:text-white/15"
                     placeholder="Erz&auml;hl uns von deinem Projekt..."
                   />
                 </div>
                 <motion.button
+                  type="submit"
+                  disabled={formStatus === 'loading'}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full border border-white/20 text-white font-bold py-5 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-colors duration-300"
+                  className="w-full border border-white/20 text-white font-bold py-5 uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                 >
-                  Anfrage senden
+                  {formStatus === 'loading' ? 'Wird gesendet...' : formStatus === 'success' ? 'Erfolgreich gesendet!' : 'Anfrage senden'}
                 </motion.button>
+                {formStatus === 'error' && (
+                  <p className="text-red-500 text-xs mt-2 text-center">Es gab einen Fehler beim Senden. Bitte versuche es später noch einmal.</p>
+                )}
               </form>
             </RevealOnScroll>
           </div>
