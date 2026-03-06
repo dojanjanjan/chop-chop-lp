@@ -154,6 +154,17 @@ export default function LandingPage() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const handleCheckboxChange = (service: string) => {
+    setFormData(prev => {
+      const interests = prev.interest ? prev.interest.split(', ').filter(Boolean) : []
+      if (interests.includes(service)) {
+        return { ...prev, interest: interests.filter(i => i !== service).join(', ') }
+      } else {
+        return { ...prev, interest: [...interests, service].join(', ') }
+      }
+    })
+  }
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setFormStatus('loading')
@@ -513,23 +524,23 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-4">Dies interessiert mich besonders</label>
-                    <div className="relative">
-                      <select
-                        name="interest"
-                        value={formData.interest}
-                        onChange={handleFormChange}
-                        className="w-full bg-black border-b border-white/10 pb-3 text-white text-sm focus:outline-none focus:border-white transition-colors duration-300 appearance-none cursor-pointer"
-                      >
-                        <option value="" disabled className="text-white/50 bg-black">Bitte ausw&auml;hlen...</option>
-                        {formServices.map((service, i) => (
-                          <option key={i} value={service} className="bg-black text-white py-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                      {formServices.map((service, i) => (
+                        <label key={i} className="flex items-start gap-3 cursor-pointer group">
+                          <div className="relative flex items-center justify-center flex-shrink-0 w-4 h-4 mt-0.5">
+                            <input
+                              type="checkbox"
+                              checked={formData.interest.split(', ').includes(service)}
+                              onChange={() => handleCheckboxChange(service)}
+                              className="peer appearance-none w-4 h-4 border border-white/20 bg-white/5 rounded-sm checked:bg-white checked:border-white transition-colors cursor-pointer"
+                            />
+                            <svg className="absolute w-3 h-3 text-black opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+                          </div>
+                          <span className="text-xs text-white/60 group-hover:text-white transition-colors leading-relaxed select-none">
                             {service}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="absolute right-0 top-0 pt-1 pointer-events-none text-white/50">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
-                      </div>
+                          </span>
+                        </label>
+                      ))}
                     </div>
                   </div>
                   <div>
