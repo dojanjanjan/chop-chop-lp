@@ -180,17 +180,7 @@ export default function LandingPage() {
               </span>
             </motion.a>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.7 }}
-              className="hidden md:flex items-center gap-10 text-xs uppercase tracking-[0.2em] font-medium"
-            >
-              <a href="#work" className="hover-underline">Arbeiten</a>
-              <a href="#contact" className="hover-underline">Kontakt</a>
-            </motion.div>
-
-            <button className="md:hidden relative z-50" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <button className="relative z-50" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <AnimatePresence mode="wait">
                 {isMenuOpen ? (
                   <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
