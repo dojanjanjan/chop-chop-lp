@@ -207,10 +207,10 @@ export default function LandingPage() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-8"
           >
-            {(['Arbeiten', 'Leistungen', 'Kontakt'] as const).map((item, i) => (
+            {(['Beispiele', 'Leistungen', 'Kontakt'] as const).map((item, i) => (
               <motion.a
                 key={item}
-                href={`#${item === 'Arbeiten' ? 'work' : item === 'Leistungen' ? 'features' : 'contact'}`}
+                href={`#${item === 'Beispiele' ? 'work' : item === 'Leistungen' ? 'features' : 'contact'}`}
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.1 }}
